@@ -21,7 +21,7 @@ public class Main {
     private static final String CALL_SP_Mostrar_Cliente = String.format("call Muestra_Clientes()");
 
     private static final MySqlOperations mySqlOperations = new MySqlOperations();
-
+    public static Scanner datos = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
         PropertyConfigurator.configure(USER_DIR.getValue() + LOG4J_PROPERTIES_FILE_PATH.getValue());
         Scanner sc = new Scanner(System.in);
@@ -47,20 +47,13 @@ public class Main {
                     selectAllFromSede();
                     break;
                 case "3":
-                    // callSpMostrar_Sedes();
+                    updateCliente();
                     break;
                 case "4":
-                    //actualizarClientes();
+                    createCliente();
                     break;
                 case "5":
-                    //  insertarCliente();
-                    break;
-                case "6":
-                    // calcularDiasLaborados();
-                    System.out.println();
-                    break;
-                case "7":
-                    //eliminarCliente();
+                      deleteCliente();
                     break;
                 case "0":
                     salir = false;
@@ -93,6 +86,36 @@ public class Main {
         mySqlOperations.printResultSet();
     }
 
+    private static void updateCliente() throws SQLException {
+        String temporal ="";
+        System.out.println("ingrese nombre de datos a actualizar con su cedula");
+        System.out.println("Ejm: 'San Francisco Bogota', CC ");
+        temporal = datos.nextLine();
+        temporal = "call Actualizar_Clientes("+temporal+")";
+        mySqlOperations.setSqlStatement(temporal);
+        mySqlOperations.executeSqlStatement();
+        mySqlOperations.printResultSet();
+    }
+    private static void createCliente() throws SQLException {
+        String temporal ="";
+        System.out.println("ingrese  datos de cliente");
+        System.out.println("Ejm:  CC, 'nombre Sede', 'Nombre Cliente', 'Apellido Paterno', 'Apellido Materno'");
+        temporal = datos.nextLine();
+        temporal = "call Crear_Clientes("+temporal+")";
+        mySqlOperations.setSqlStatement(temporal);
+        mySqlOperations.executeSqlStatement();
+        mySqlOperations.printResultSet();
+    }
+
+    private static void deleteCliente() throws SQLException {
+        String temporal ="";
+        System.out.println("ingrese Cedula de cliente a eliminar");
+        temporal = datos.nextLine();
+        temporal = "call Borrar_Clientes("+temporal+")";
+        mySqlOperations.setSqlStatement(temporal);
+        mySqlOperations.executeSqlStatement();
+        mySqlOperations.printResultSet();
+    }
     private static void callSpActualizarCliente() throws SQLException {
         mySqlOperations.setSqlStatement(CALL_SP_Mostrar_Cliente);
         mySqlOperations.executeSqlStatement();
